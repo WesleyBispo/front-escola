@@ -1,9 +1,9 @@
 import { Container, FileInfo, Preview } from './styled';
 import { CircularProgressbar } from 'react-circular-progressbar';
-import { MdCheckCircle, MdError, MdLink } from 'react-icons/md';
+import { MdCheckCircle, MdError, MdLink, MdDelete } from 'react-icons/md'; // Importar MdDelete para o ícone de remoção
 import PropTypes from 'prop-types';
 
-const ListFile = ({ files }) => {
+const ListFile = ({ files, onRemove }) => {
     return (
         <Container>
             {files.map((file) => (
@@ -12,38 +12,26 @@ const ListFile = ({ files }) => {
                         <Preview src={file.preview} />
                         <div>
                             <strong>{file.name}</strong>
-                            <span>
-                                {file.readableSize}
-                                {!!file.url && (
-                                    <button
-                                        onClick={() => {
-                                            alert('EXCLUIR MSG');
-                                        }}
-                                        id="btn-delete"
-                                    >
-                                        Excluir
-                                    </button>
+                            <div className="icon-size">
+                                <span>{file.readableSize}</span>
+
+                                {!file.uploaded && (
+                                    <MdDelete
+                                        size={20}
+                                        color="#ff1744"
+                                        onClick={() => onRemove(file.id)}
+                                    />
                                 )}
-                            </span>
+                            </div>
                         </div>
                     </FileInfo>
                     <div className="div-icons">
-                        {!file.uploaded && !file.error && (
-                            <CircularProgressbar
-                                styles={{
-                                    root: { width: 24 },
-                                    path: { stroke: '#7159c1' },
-                                }}
-                                strokeWidth={10}
-                                value={file.progress}
-                            />
-                        )}
-
-                        {file.url && (
+                        {file.preview && (
                             <a
-                                href={file.preview}
+                                href={file.preview} // Deve ser file.url para apontar para a imagem carregada no servidor
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                style={{ marginLeft: 10 }}
                             >
                                 <MdLink
                                     style={{ marginRight: 8 }}
@@ -51,6 +39,18 @@ const ListFile = ({ files }) => {
                                     color="#222"
                                 />
                             </a>
+                        )}
+                        {!file.uploaded && !file.error && (
+                            <>
+                                <CircularProgressbar
+                                    styles={{
+                                        root: { width: 24 },
+                                        path: { stroke: '#7159c1' },
+                                    }}
+                                    strokeWidth={10}
+                                    value={file.progress}
+                                />
+                            </>
                         )}
 
                         {file.uploaded && (
@@ -65,7 +65,8 @@ const ListFile = ({ files }) => {
 };
 
 ListFile.propTypes = {
-    files: PropTypes.array,
+    files: PropTypes.array.isRequired,
+    onRemove: PropTypes.func.isRequired,
 };
 
 export default ListFile;

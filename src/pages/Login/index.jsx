@@ -77,7 +77,7 @@ const Login = () => {
             navigate(redirectTo, { replaceState: true });
             axios.defaults.headers.Authorization = `Bearer ${token}`;
             setLoading(false);
-        }, 1000);
+        }, 500);
     };
 
     return (

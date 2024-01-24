@@ -20,3 +20,12 @@ export const Container = styled.div`
     flex-direction: column;
     row-gap: 10px;
 `;
+
+export const DivButton = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button {
+        width: 50%;
+    }
+`;

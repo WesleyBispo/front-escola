@@ -20,7 +20,8 @@ function* workLoginRequest(action) {
         const { data } = response;
         yield put(loginSuccess(data));
     } catch (error) {
-        const { errors } = error.response.data;
+        console.log(error);
+        const { errors } = error.response.data.errors;
         errors.forEach((err) => toast.error(err));
         yield put(loginFailure());
     }

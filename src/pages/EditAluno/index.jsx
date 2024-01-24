@@ -1,4 +1,5 @@
 import { Title, Container } from './styled';
+import StudentAvatar from '../../components/StudentAvatar';
 import InputArea from '../../components/Input';
 
 import HandleAlert from '../../utils/HandleAlert';
@@ -8,13 +9,15 @@ import { useEffect, useState } from 'react';
 
 import { isEmail } from 'validator';
 import { toast } from 'react-toastify';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
 import useTokenHeader from '../../hooks/useTokenHeader';
 
 import Loader from '../../components/Loader';
 import axios from '../../services/axios';
+import { FaEdit } from 'react-icons/fa';
+import { primaryColor } from '../../config/colors';
 
 const EditAluno = () => {
     const token = useSelector((state) => state.login.token);
@@ -154,14 +157,26 @@ const EditAluno = () => {
         }, 2000);
     };
 
+    const ultimaFotoAdicionada =
+        student?.images?.length > 0 ? student.images[0].url : null;
+
     return (
         <section>
-            {/* Renderize o loader se o estado de loading for verdadeiro */}
             {loading && <Loader />}
             <Container>
                 {student && (
                     <>
                         <Title>Edite o aluno</Title>
+                        <StudentAvatar
+                            imageUrl={ultimaFotoAdicionada}
+                            altText={student.nome || 'Aluno'}
+                            id={id}
+                            tamanho={180}
+                        >
+                            <Link to={`/fotos/${id}`}>
+                                <FaEdit size={25} color={primaryColor} />
+                            </Link>
+                        </StudentAvatar>
                         <form method="post" onSubmit={handleSubmit}>
                             <label htmlFor="nome">Nome:</label>
                             <InputArea

@@ -93,7 +93,7 @@ const ListItem = ({ id, nome, email, idade, fotos }) => {
                 {ultimaFotoAdicionada ? (
                     <img src={ultimaFotoAdicionada.url} alt={nome} />
                 ) : (
-                    <FaUserCircle />
+                    <FaUserCircle color="#ccc" />
                 )}
             </div>
         </Li>

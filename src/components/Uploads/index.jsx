@@ -1,12 +1,8 @@
 import { useDropzone } from 'react-dropzone';
 import { Container, UploadMessage } from './styled';
-import { uniqueId } from 'lodash';
-import { filesize } from 'filesize';
-import { useDispatch } from 'react-redux';
-import { addFile } from '../../features/uploads/uploadsSlice';
+import PropTypes from 'prop-types';
 
-const Uploads = () => {
-    const dispatch = useDispatch();
+const Uploads = ({ onUpload }) => {
     const getUploadMessage = (isDragAccept, isDragReject) => {
         if (isDragAccept) {
             return (
@@ -27,22 +23,6 @@ const Uploads = () => {
                 Arraste a foto do aluno aqui...
             </UploadMessage>
         );
-    };
-
-    const onUpload = (files) => {
-        const [file] = files;
-        console.log(file);
-        const fileSchema = {
-            id: uniqueId(),
-            name: file.name,
-            readableSize: filesize(file.size),
-            preview: URL.createObjectURL(file),
-            progress: 0,
-            uploaded: false,
-            error: false,
-            url: null,
-        };
-        dispatch(addFile(fileSchema));
     };
 
     const { getRootProps, getInputProps, isDragAccept, isDragReject } =
@@ -68,6 +48,10 @@ const Uploads = () => {
             </Container>
         </>
     );
+};
+
+Uploads.propTypes = {
+    onUpload: PropTypes.func,
 };
 
 export default Uploads;

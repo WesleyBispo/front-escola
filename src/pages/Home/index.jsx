@@ -22,7 +22,6 @@ const Home = () => {
     const isLoggedRef = useRef(isLogged);
     const tokenRef = useRef(token);
 
-    // Sincronize isLoggedRef.current com isLogged sempre que isLogged mudar.
     useEffect(() => {
         isLoggedRef.current = isLogged;
         tokenRef.current = token;
@@ -66,8 +65,6 @@ const Home = () => {
         dispatch(loginRequest({ email, senha }));
 
         setTimeout(() => {
-            console.log(isLoggedRef.current);
-            console.log(tokenRef.current);
             if (!isLoggedRef.current || !tokenRef.current) {
                 return setLoading(false);
             }
@@ -75,7 +72,7 @@ const Home = () => {
             axios.defaults.headers.Authorization = `Bearer ${token}`;
             toast.success('Seja bem vindo');
             setLoading(false);
-        }, 2000);
+        }, 500);
     };
     return (
         <section>
